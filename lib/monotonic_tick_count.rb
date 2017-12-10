@@ -41,7 +41,7 @@ class MonotonicTickCount
   end
 
   def <=>(rhs)
-    rhs.respond_to?(:tick_count_f) or raise "Other operand be a #{self.class} or equivalent"
+    rhs.respond_to?(:tick_count_f) or raise ArgumentError, "Other operand must be a #{self.class} or equivalent"
     @tick_count_f <=> rhs.tick_count_f
   end
 

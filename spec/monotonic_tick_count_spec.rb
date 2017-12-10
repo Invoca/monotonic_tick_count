@@ -15,7 +15,7 @@ describe MonotonicTickCount do
     it "should have a copy constructor" do
       tick_count1 = MonotonicTickCount.new
       tick_count2 = MonotonicTickCount.new(tick_count1)
-      expect(tick_count2.tick_count_f).to eq(tick_count1.tick_count_f)
+      expect(tick_count2).to eq(tick_count1)
     end
 
     it "should raise an exception from copy constructor if rhs isn't same class or equivalent" do
@@ -73,6 +73,12 @@ describe MonotonicTickCount do
 
     it "should support ==" do
       expect(@tick_count1).to be == @tick_count1
+    end
+
+    it "should raise an exception if rhs isn't the same class or equivalent" do
+      tick_count1 = 123.1
+      tick_count2 = MonotonicTickCount.new(tick_count_f: 125.6)
+      expect { difference = tick_count2 > tick_count1 }.to raise_error(ArgumentError, "Other operand must be a MonotonicTickCount or equivalent")
     end
   end
 
