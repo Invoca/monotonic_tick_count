@@ -9,7 +9,6 @@ class MonotonicTickCount
   attr_reader :tick_count_f
 
   # initialize from one of:
-  #   - no arguments--uses the system current_tick_count
   #   - another object of this type OR
   #   - an equivalent object that responds to tick_count_f OR
   #   - an explicit keyword value of tick_count_f: which is a floating point count of seconds with fractional second at nanosecond granularity
@@ -17,10 +16,8 @@ class MonotonicTickCount
     @tick_count_f = if rhs
                       rhs.respond_to?(:tick_count_f) or raise ArgumentError, "Must initialize from #{self.class} or equivalent"
                       rhs.tick_count_f
-                    elsif tick_count_f
-                      tick_count_f
                     else
-                      self.class.current_tick_count
+                      tick_count_f or raise ArgumentError, "Must provide either rhs or tick_count_f:"
                     end
   end
 
@@ -53,8 +50,8 @@ class MonotonicTickCount
 
 
   class << self
-    def current_tick_count
-      Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    def now
+      new(tick_count_f: Process.clock_gettime(Process::CLOCK_MONOTONIC))
     end
   end
 end
