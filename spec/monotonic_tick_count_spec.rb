@@ -6,25 +6,31 @@ describe MonotonicTickCount do
   end
 
   context "#initialize" do
-    it "should snapshot the current tick counter when constructed with no arguments" do
-      expect(Process).to receive(:clock_gettime).with(Process::CLOCK_MONOTONIC) { 1234.012345 }
-      tick_count = MonotonicTickCount.new
-      expect(tick_count.tick_count_f).to eq(1234.012345)
-    end
-
     it "should have a copy constructor" do
-      tick_count1 = MonotonicTickCount.new
+      tick_count1 = MonotonicTickCount.now
       tick_count2 = MonotonicTickCount.new(tick_count1)
       expect(tick_count2).to eq(tick_count1)
-    end
-
-    it "should raise an exception from copy constructor if rhs isn't same class or equivalent" do
-      expect { MonotonicTickCount.new(1122.33) }.to raise_error(ArgumentError, "Must initialize from MonotonicTickCount or equivalent")
     end
 
     it "should be constructable from a raw tick_count_f" do
       tick_count = MonotonicTickCount.new(tick_count_f: 112233.4455)
       expect(tick_count.tick_count_f).to eq(112233.4455)
+    end
+
+    it "should raise an exception if neither initialize arguemnt is passed" do
+      expect { MonotonicTickCount.new }.to raise_error(ArgumentError, "Must provide either rhs or tick_count_f:")
+    end
+
+    it "should raise an exception if first initialize arguemnts is nil" do
+      expect { MonotonicTickCount.new(nil) }.to raise_error(ArgumentError, "Must provide either rhs or tick_count_f:")
+    end
+
+    it "should raise an exception if both initialize arguemnts are nil" do
+      expect { MonotonicTickCount.new(nil, tick_count_f: nil) }.to raise_error(ArgumentError, "Must provide either rhs or tick_count_f:")
+    end
+
+    it "should raise an exception from copy constructor if rhs isn't same class or equivalent" do
+      expect { MonotonicTickCount.new(1122.33) }.to raise_error(ArgumentError, "Must initialize from MonotonicTickCount or equivalent")
     end
   end
 
@@ -114,17 +120,17 @@ describe MonotonicTickCount do
   context "#inspect" do
     it "should identify itself and have the tick count" do
       expect(Process).to receive(:clock_gettime).with(Process::CLOCK_MONOTONIC) { 1234.012345 }
-      tick_count = MonotonicTickCount.new
+      tick_count = MonotonicTickCount.now
       expect(tick_count.inspect).to eq("monotonic tick count 1234.012345")
     end
   end
 
   context "class methods" do
-    context "current_tick_count" do
-      it "should return the Process monotonic tick count" do
+    context ".now" do
+      it "return an instance containing the current global monotonic tick counter" do
         expect(Process).to receive(:clock_gettime).with(Process::CLOCK_MONOTONIC) { 1234.012345 }
-        current_tick_count = MonotonicTickCount.current_tick_count
-        expect(current_tick_count).to eq(1234.012345)
+        tick_count = MonotonicTickCount.now
+        expect(tick_count.tick_count_f).to eq(1234.012345)
       end
     end
   end
