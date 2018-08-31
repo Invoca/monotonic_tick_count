@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe MonotonicTickCount do
@@ -18,18 +20,18 @@ describe MonotonicTickCount do
     end
 
     it "should raise an exception if neither initialize arguemnt is passed" do
-      expect { MonotonicTickCount.new }.to raise_error(ArgumentError, "Must provide either rhs or tick_count_f:")
+      expect { MonotonicTickCount.new }.to raise_error(ArgumentError, "Must provide either other or tick_count_f:")
     end
 
     it "should raise an exception if first initialize arguemnts is nil" do
-      expect { MonotonicTickCount.new(nil) }.to raise_error(ArgumentError, "Must provide either rhs or tick_count_f:")
+      expect { MonotonicTickCount.new(nil) }.to raise_error(ArgumentError, "Must provide either other or tick_count_f:")
     end
 
     it "should raise an exception if both initialize arguemnts are nil" do
-      expect { MonotonicTickCount.new(nil, tick_count_f: nil) }.to raise_error(ArgumentError, "Must provide either rhs or tick_count_f:")
+      expect { MonotonicTickCount.new(nil, tick_count_f: nil) }.to raise_error(ArgumentError, "Must provide either other or tick_count_f:")
     end
 
-    it "should raise an exception from copy constructor if rhs isn't same class or equivalent" do
+    it "should raise an exception from copy constructor if other isn't same class or equivalent" do
       expect { MonotonicTickCount.new(1122.33) }.to raise_error(ArgumentError, "Must initialize from MonotonicTickCount or equivalent")
     end
   end
@@ -42,10 +44,10 @@ describe MonotonicTickCount do
       expect(difference).to eq(2.5.seconds)
     end
 
-    it "should raise an exception if rhs isn't the same class or equivalent" do
+    it "should raise an exception if other isn't the same class or equivalent" do
       tick_count1 = 123.1
       tick_count2 = MonotonicTickCount.new(tick_count_f: 125.6)
-      expect { difference = tick_count2 - tick_count1 }.to raise_error(ArgumentError, "Other operand must be a MonotonicTickCount or equivalent")
+      expect { tick_count2 - tick_count1 }.to raise_error(ArgumentError, "Other operand must be a MonotonicTickCount or equivalent")
     end
   end
 
@@ -57,7 +59,7 @@ describe MonotonicTickCount do
       expect(sum.tick_count_f).to eq(125.6)
     end
 
-    it "should raise an exception if rhs isn't an ActiveSupport::Duration or equivalent" do
+    it "should raise an exception if other isn't an ActiveSupport::Duration or equivalent" do
       tick_count = MonotonicTickCount.new(tick_count_f: 123.1)
       expect { tick_count + 2.5 }.to raise_error(ArgumentError, "Other operand must be an ActiveSupport::Duration or equivalent")
     end
@@ -81,10 +83,10 @@ describe MonotonicTickCount do
       expect(@tick_count1).to be == @tick_count1
     end
 
-    it "should raise an exception if rhs isn't the same class or equivalent" do
+    it "should raise an exception if other isn't the same class or equivalent" do
       tick_count1 = 123.1
       tick_count2 = MonotonicTickCount.new(tick_count_f: 125.6)
-      expect { difference = tick_count2 > tick_count1 }.to raise_error(ArgumentError, "Other operand must be a MonotonicTickCount or equivalent")
+      expect { tick_count2 > tick_count1 }.to raise_error(ArgumentError, "Other operand must be a MonotonicTickCount or equivalent")
     end
   end
 
@@ -108,7 +110,7 @@ describe MonotonicTickCount do
       tick_count2 = MonotonicTickCount.new(tick_count_f: 1.1)
       tick_count3 = MonotonicTickCount.new(tick_count_f: 3.3)
 
-      hash = { }
+      hash = {}
       hash[tick_count1] = :one
       hash[tick_count2] = :two  # should overwrite above since same key value
       hash[tick_count3] = :three
