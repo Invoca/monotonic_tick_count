@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "monotonic_tick_count/version"
 require "active_support"
 require "active_support/core_ext"
@@ -12,12 +14,12 @@ class MonotonicTickCount
   #   - another object of this type OR
   #   - an equivalent object that responds to tick_count_f OR
   #   - an explicit keyword value of tick_count_f: which is a floating point count of seconds with fractional second at nanosecond granularity
-  def initialize(rhs = nil, tick_count_f: nil)
-    @tick_count_f = if rhs
-                      rhs.respond_to?(:tick_count_f) or raise ArgumentError, "Must initialize from #{self.class} or equivalent"
-                      rhs.tick_count_f
+  def initialize(other = nil, tick_count_f: nil)
+    @tick_count_f = if other
+                      other.respond_to?(:tick_count_f) or raise ArgumentError, "Must initialize from #{self.class} or equivalent"
+                      other.tick_count_f
                     else
-                      tick_count_f or raise ArgumentError, "Must provide either rhs or tick_count_f:"
+                      tick_count_f or raise ArgumentError, "Must provide either other or tick_count_f:"
                     end
   end
 
@@ -25,21 +27,21 @@ class MonotonicTickCount
     "monotonic tick count #{@tick_count_f}"
   end
 
-  # returns the difference from the rhs tick count and this tick count
+  # returns the difference from the other tick count and this tick count
   # as an ActiveSupport::Duration
-  def -(rhs)
-    rhs.respond_to?(:tick_count_f) or raise ArgumentError, "Other operand must be a #{self.class} or equivalent"
-    (@tick_count_f - rhs.tick_count_f).seconds
+  def -(other)
+    other.respond_to?(:tick_count_f) or raise ArgumentError, "Other operand must be a #{self.class} or equivalent"
+    (@tick_count_f - other.tick_count_f).seconds
   end
 
-  def +(rhs)
-    rhs.respond_to?(:from_now) or raise ArgumentError, "Other operand must be an ActiveSupport::Duration or equivalent"
-    self.class.new(tick_count_f: @tick_count_f + rhs.to_f)
+  def +(other)
+    other.respond_to?(:from_now) or raise ArgumentError, "Other operand must be an ActiveSupport::Duration or equivalent"
+    self.class.new(tick_count_f: @tick_count_f + other.to_f)
   end
 
-  def <=>(rhs)
-    rhs.respond_to?(:tick_count_f) or raise ArgumentError, "Other operand must be a #{self.class} or equivalent"
-    @tick_count_f <=> rhs.tick_count_f
+  def <=>(other)
+    other.respond_to?(:tick_count_f) or raise ArgumentError, "Other operand must be a #{self.class} or equivalent"
+    @tick_count_f <=> other.tick_count_f
   end
 
   def hash
@@ -47,7 +49,6 @@ class MonotonicTickCount
   end
 
   alias eql? ==
-
 
   class << self
     def now
