@@ -41,7 +41,7 @@ describe MonotonicTickCount do
       tick_count1 = MonotonicTickCount.new(tick_count_f: 123.1)
       tick_count2 = MonotonicTickCount.new(tick_count_f: 125.6)
       difference = tick_count2 - tick_count1
-      expect(difference).to eq(2.5.seconds)
+      expect(difference).to eq(2.5)
     end
 
     it "should raise an exception if other isn't the same class or equivalent" do
