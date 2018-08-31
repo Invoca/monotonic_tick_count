@@ -27,7 +27,7 @@ class MonotonicTickCount
     "monotonic tick count #{@tick_count_f}"
   end
 
-  # returns the difference from the other tick count and this tick count as a float of fractional seconds
+  # returns the difference from the other tick count and this tick count as a float
   def -(other)
     other.respond_to?(:tick_count_f) or raise ArgumentError, "Other operand must be a #{self.class} or equivalent"
     @tick_count_f - other.tick_count_f
