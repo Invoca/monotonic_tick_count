@@ -54,10 +54,11 @@ class MonotonicTickCount
       new(tick_count_f: Process.clock_gettime(Process::CLOCK_MONOTONIC))
     end
 
+    # yields to the caller and returns a pair: [result from yield, float time in seconds of block run]
     def timer
-      start = MonotonicTickCount.now
+      start = self.now
       result = yield
-      [result, MonotonicTickCount.now - start]
+      [result, self.now - start]
     end
   end
 end

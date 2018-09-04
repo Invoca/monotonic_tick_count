@@ -138,12 +138,10 @@ describe MonotonicTickCount do
 
     context ".timer" do
       it "should return the result and elapsed ticks of the given block" do
-        result, duration = MonotonicTickCount.timer do
-          sleep(2.718)
-          1
-        end
+        expect(MonotonicTickCount).to receive(:now).and_return(0.0, 2.718)
+        result, duration = MonotonicTickCount.timer { 1 }
         expect(result).to be == 1
-        expect(duration).to be_within(0.01).of(2.718)
+        expect(duration).to be == 2.718
       end
     end
   end
