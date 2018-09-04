@@ -137,7 +137,7 @@ describe MonotonicTickCount do
     end
 
     context ".timer" do
-      it "should return the result and elapsed seconds of the given block" do
+      it "should return the result and elapsed ticks of the given block" do
         result, duration = MonotonicTickCount.timer do
           sleep(2.718)
           1
