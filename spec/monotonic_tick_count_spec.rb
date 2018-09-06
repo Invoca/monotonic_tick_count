@@ -129,10 +129,19 @@ describe MonotonicTickCount do
 
   context "class methods" do
     context ".now" do
-      it "return an instance containing the current global monotonic tick counter" do
+      it "should return an instance containing the current global monotonic tick counter" do
         expect(Process).to receive(:clock_gettime).with(Process::CLOCK_MONOTONIC) { 1234.012345 }
         tick_count = MonotonicTickCount.now
         expect(tick_count.tick_count_f).to eq(1234.012345)
+      end
+    end
+
+    context ".timer" do
+      it "should return the result and elapsed ticks of the given block" do
+        expect(MonotonicTickCount).to receive(:now).and_return(0.0, 2.718)
+        result, duration = MonotonicTickCount.timer { 1 }
+        expect(result).to be == 1
+        expect(duration).to be == 2.718
       end
     end
   end
