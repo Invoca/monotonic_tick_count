@@ -8,18 +8,19 @@ For an explanation as to why this is preferrable to using the wall clock for tim
 Comparing two monotonic timestamps
 ```
 tick_count_a = MonotonicTickCount.now
-tick_count_b = MonotonicTickCount.now + 15.minutes
-tick_count_a < tick_count_b == true
-tick_count_b - tick_count_a == 900.0
+tick_count_b = tick_count_a + 15.minutes
+tick_count_a < tick_count_b => true
+tick_count_b - tick_count_a => 900.0
 ```
 
-Finding the elapsed tick count of a block
+Finding the elapsed seconds of a block
 ```
-return_val, elapsed_ticks = MonotonicTickCount.timer do
+return_val, elapsed_seconds = MonotonicTickCount.timer do
   sleep(10)
   1
 end
-[return_val, elapsed_ticks] == [1, 10.0]
+return_val      => 1
+elapsed_seconds => 10.0
 ```
 
 ## Installation
