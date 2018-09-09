@@ -1,8 +1,25 @@
 # MonotonicTickCount
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/monotonic_tick_count`. To experiment with that code, run `bin/console` for an interactive prompt.
+Implements a PORO that can be used for monotonic timestamping. It wraps a count of fractional seconds (or ticks) that can be initialized to the system monotonic clock via the `.now` method or to any float you supply. It implements the comparable interface and arithmetic operators for calculating offsets and differences.
 
-TODO: Delete this and the text above, and describe your gem
+For an explanation as to why this is preferrable to using the wall clock for timing calculations, see [this blog post](https://www.softwariness.com/articles/monotonic-clocks-windows-and-posix/).
+
+## Usage
+Comparing two monotonic timestamps
+```
+tick_count_a = MonotonicTickCount.now
+tick_count_b = MonotonicTickCount.now + 15.minutes
+tick_count_b - tick_count_a == 900.0
+```
+
+Finding the elapsed tick count of a block
+```
+return_val, elapsed_ticks = MonotonicTickCount.timer do
+  sleep(10)
+  1
+end
+[return_val, elapsed_ticks] == [1, 10.0]
+```
 
 ## Installation
 
@@ -19,10 +36,6 @@ And then execute:
 Or install it yourself as:
 
     $ gem install monotonic_tick_count
-
-## Usage
-
-TODO: Write usage instructions here
 
 ## Development
 
