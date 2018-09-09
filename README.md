@@ -9,6 +9,7 @@ Comparing two monotonic timestamps
 ```
 tick_count_a = MonotonicTickCount.now
 tick_count_b = MonotonicTickCount.now + 15.minutes
+tick_count_a < tick_count_b == true
 tick_count_b - tick_count_a == 900.0
 ```
 
