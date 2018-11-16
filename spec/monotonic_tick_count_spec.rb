@@ -47,7 +47,7 @@ describe MonotonicTickCount do
     it "should return a negative offset" do
       tick_count1 = MonotonicTickCount.new(tick_count_f: 125.6)
       tick_count2 = tick_count1 - 25.6.seconds
-      expect(tick_count2.class).to eq(MonotonicTickCount)
+      expect(tick_count2.is_a? MonotonicTickCount).to be true
       expect(tick_count2.tick_count_f).to eq(100.0)
     end
 
