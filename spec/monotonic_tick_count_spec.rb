@@ -37,17 +37,23 @@ describe MonotonicTickCount do
   end
 
   context "#-" do
-    it "should return the difference in seconds" do
+    it "should return the difference between two tick counts in seconds" do
       tick_count1 = MonotonicTickCount.new(tick_count_f: 123.1)
       tick_count2 = MonotonicTickCount.new(tick_count_f: 125.6)
       difference = tick_count2 - tick_count1
       expect(difference).to eq(2.5)
     end
 
-    it "should raise an exception if other isn't the same class or equivalent" do
-      tick_count1 = 123.1
+    it "should return a negative offset" do
+      tick_count1 = MonotonicTickCount.new(tick_count_f: 125.6)
+      tick_count2 = tick_count1 - 25.6.seconds
+      expect(tick_count2.class).to eq(MonotonicTickCount)
+      expect(tick_count2.tick_count_f).to eq(100.0)
+    end
+
+    it "should raise an exception if other isn't the same class, a duration, or equivalent" do
       tick_count2 = MonotonicTickCount.new(tick_count_f: 125.6)
-      expect { tick_count2 - tick_count1 }.to raise_error(ArgumentError, "Other operand must be a MonotonicTickCount or equivalent")
+      expect { tick_count2 - 25.6 }.to raise_error(ArgumentError, "Other operand must be an ActiveSupport::Duration, MonotonicTickCount, or equivalent")
     end
   end
 
