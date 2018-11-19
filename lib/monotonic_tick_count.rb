@@ -27,10 +27,16 @@ class MonotonicTickCount
     "monotonic tick count #{@tick_count_f}"
   end
 
-  # returns the difference from the other tick count and this tick count as a float
+  # When the RHS is a duration, returns an offset from self
+  # When the RHS is a MonotonicTickCount, returns the difference between the two in fractional seconds
   def -(other)
-    other.respond_to?(:tick_count_f) or raise ArgumentError, "Other operand must be a #{self.class} or equivalent"
-    @tick_count_f - other.tick_count_f
+    if other.respond_to?(:from_now)
+      self + -other
+    elsif other.respond_to?(:tick_count_f)
+      @tick_count_f - other.tick_count_f
+    else
+      raise ArgumentError, "Other operand must be an ActiveSupport::Duration, #{self.class}, or equivalent"
+    end
   end
 
   def +(other)
