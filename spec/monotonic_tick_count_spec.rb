@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require 'pry'
 
 describe MonotonicTickCount do
   it "should have a version number" do
