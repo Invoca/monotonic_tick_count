@@ -37,37 +37,57 @@ describe MonotonicTickCount do
   end
 
   context "#-" do
+    before do
+      @tick_count1 = MonotonicTickCount.new(tick_count_f: 123.1)
+    end
+
     it "should return the difference between two tick counts in seconds" do
-      tick_count1 = MonotonicTickCount.new(tick_count_f: 123.1)
       tick_count2 = MonotonicTickCount.new(tick_count_f: 125.6)
-      difference = tick_count2 - tick_count1
+      difference = tick_count2 - @tick_count1
       expect(difference).to eq(2.5)
     end
 
-    it "should return a negative offset" do
-      tick_count1 = MonotonicTickCount.new(tick_count_f: 125.6)
-      tick_count2 = tick_count1 - 25.6.seconds
+    it "should return a negative offset for a duration rhs" do
+      tick_count2 = @tick_count1 - 23.1.seconds
       expect(tick_count2.is_a? MonotonicTickCount).to be true
       expect(tick_count2.tick_count_f).to eq(100.0)
     end
 
-    it "should raise an exception if other isn't the same class, a duration, or equivalent" do
-      tick_count2 = MonotonicTickCount.new(tick_count_f: 125.6)
-      expect { tick_count2 - 25.6 }.to raise_error(ArgumentError, "Other operand must be an ActiveSupport::Duration, MonotonicTickCount, or equivalent")
+    it "should return a negative offset for a numeric rhs" do
+      tick_count2 = @tick_count1 - 23.1
+      expect(tick_count2.is_a? MonotonicTickCount).to be true
+      expect(tick_count2.tick_count_f).to eq(100.0)
+    end
+
+    it "should raise an exception if other isn't the same class or does not respond to to_f" do
+      expect { @tick_count1 - Object.new }.to raise_error(ArgumentError, "Other operand must be another MonotonicTickCount or respond to to_f")
     end
   end
 
   context "#+" do
+    before do
+      @tick_count = MonotonicTickCount.new(tick_count_f: 123.1)
+    end
+
     it "should support adding a duration" do
-      tick_count = MonotonicTickCount.new(tick_count_f: 123.1)
       duration = 2.5.seconds
-      sum = tick_count + duration
+      sum = @tick_count + duration
       expect(sum.tick_count_f).to eq(125.6)
     end
 
-    it "should raise an exception if other isn't an ActiveSupport::Duration or equivalent" do
-      tick_count = MonotonicTickCount.new(tick_count_f: 123.1)
-      expect { tick_count + 2.5 }.to raise_error(ArgumentError, "Other operand must be an ActiveSupport::Duration or equivalent")
+    it "should support adding a numeric" do
+      sum = @tick_count + 2.5
+      expect(sum.tick_count_f).to eq(125.6)
+    end
+
+    it "should support adding anything that responds to to_f" do
+      obj = Object.new.tap { |obj| allow(obj).to receive(:to_f) { 2.5 } }
+      sum = @tick_count + obj
+      expect(sum.tick_count_f).to eq(125.6)
+    end
+
+    it "should raise an exception if rhs does not respond to to_f" do
+      expect { @tick_count + Object.new }.to raise_error(ArgumentError, "Other operand must respond to to_f")
     end
   end
 
