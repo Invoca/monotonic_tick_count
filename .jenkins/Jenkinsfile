@@ -1,0 +1,51 @@
+#!/usr/bin/groovy
+@Library('jenkins-pipeline@v0.4.5')
+import com.invoca.docker.*;
+pipeline {
+  agent {
+    kubernetes {
+      defaultContainer "ruby"
+      yamlFile ".jenkins/ruby_build_pod.yml"
+    }
+  }
+
+  environment {
+    GITHUB_TOKEN = credentials('github_token')
+    BUNDLE_GEM__FURY__IO = credentials('gemfury_deploy_token')
+  }
+
+  stages {
+    stage('Setup') {
+      steps {
+        updateGitHubStatus('clean-build', 'pending', 'Unit tests.')
+        script {
+          sh 'bundle install'
+        }
+      }
+    }
+    stage('Unit Test') {
+      steps {
+        script {
+          sh 'bundle exec rspec --format RspecJunitFormatter --out spec/reports/rspec.xml'
+        }
+      }
+      post {
+        always { junit '*/reports/*.xml' }
+        success { updateGitHubStatus('clean-build', 'success', 'Unit tests.') }
+        failure { updateGitHubStatus('clean-build', 'failure', 'Unit tests.') }
+      }
+    }
+  }
+}
+
+void updateGitHubStatus(String context, String status, String description) {
+  gitHubStatus([
+    repoSlug:    'Invoca/monotonic_tick_count',
+    sha:         env.GIT_COMMIT,
+    description: description,
+    context:     context,
+    targetURL:   env.BUILD_URL,
+    token:       env.GITHUB_TOKEN,
+    status:      status
+  ])
+}
