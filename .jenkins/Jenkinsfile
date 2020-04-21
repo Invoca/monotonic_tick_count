@@ -26,7 +26,7 @@ pipeline {
     stage('Unit Test') {
       steps {
         script {
-          sh 'bundle exec rake'
+          sh 'bundle exec rspec --format RspecJunitFormatter --out spec/reports/rspec.xml'
         }
       }
       post {
