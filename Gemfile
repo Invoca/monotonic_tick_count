@@ -6,7 +6,7 @@ source 'https://rubygems.org'
 gemspec
 
 group :development do
-  gem 'bundler', '~> 1.15'
+  gem 'bundler', '~> 1.17'
   gem 'pry'
   gem 'rake'
   gem 'rspec', '~> 3.7'

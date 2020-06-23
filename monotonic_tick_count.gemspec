@@ -8,20 +8,17 @@ require "monotonic_tick_count/version"
 Gem::Specification.new do |spec|
   spec.name          = "monotonic_tick_count"
   spec.version       = MonotonicTickCount::VERSION
-  spec.authors       = ["Colin Kelley"]
-  spec.email         = ["colindkelley@gmail.com"]
+  spec.authors       = ["Invoca Development"]
+  spec.email         = ["development@invoca.com"]
 
   spec.summary       = "PORO to hold a monotonic tick count. Useful for measuring time differences."
-  spec.description   = "PORO to hold a monotonic tick count. Useful for measuring time differences."
+  spec.description   = spec.summary
   spec.homepage      = "https://github.com/invoca/monotonic_tick_count"
   spec.license       = "MIT"
 
-  if spec.respond_to?(:metadata)
-    spec.metadata["allowed_push_host"] = "https://rubygems.org"
-  else
-    raise "RubyGems 2.0 or newer is required to protect against " \
-      "public gem pushes."
-  end
+  spec.metadata = {
+   "allowed_push_host" => "https://rubygems.org"
+  }
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
@@ -30,5 +27,5 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "activesupport", "~> 4.2"
+  spec.add_dependency "activesupport", ">= 4.2"
 end
