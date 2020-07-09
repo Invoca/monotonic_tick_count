@@ -7,7 +7,7 @@ describe MonotonicTickCount do
     expect(::MonotonicTickCount::VERSION).to be
   end
 
-  context "#initialize" do
+  describe "#initialize" do
     it "should have a copy constructor" do
       tick_count1 = MonotonicTickCount.now
       tick_count2 = MonotonicTickCount.new(tick_count1)
@@ -36,7 +36,7 @@ describe MonotonicTickCount do
     end
   end
 
-  context "#-" do
+  describe "#-" do
     before do
       @tick_count1 = MonotonicTickCount.new(tick_count_f: 123.1)
     end
@@ -64,7 +64,7 @@ describe MonotonicTickCount do
     end
   end
 
-  context "#+" do
+  describe "#+" do
     before do
       @tick_count = MonotonicTickCount.new(tick_count_f: 123.1)
     end
@@ -91,7 +91,7 @@ describe MonotonicTickCount do
     end
   end
 
-  context "Comparable" do
+  describe "Comparable" do
     before do
       @tick_count1 = MonotonicTickCount.new(tick_count_f: 1.1)
       @tick_count2 = MonotonicTickCount.new(tick_count_f: 2.2)
@@ -116,7 +116,7 @@ describe MonotonicTickCount do
     end
   end
 
-  context "#hash" do
+  describe "#hash" do
     it "should delegate hash to tick_count_f" do
       tick_count1 = MonotonicTickCount.new(tick_count_f: 1.1)
       tick_count2 = MonotonicTickCount.new(tick_count_f: 1.1)
@@ -145,7 +145,7 @@ describe MonotonicTickCount do
     end
   end
 
-  context "#inspect" do
+  describe "#inspect" do
     it "should identify itself and have the tick count" do
       expect(Process).to receive(:clock_gettime).with(Process::CLOCK_MONOTONIC) { 1234.012345 }
       tick_count = MonotonicTickCount.now
@@ -154,7 +154,7 @@ describe MonotonicTickCount do
   end
 
   context "class methods" do
-    context ".now" do
+    describe ".now" do
       it "should return an instance containing the current global monotonic tick counter" do
         expect(Process).to receive(:clock_gettime).with(Process::CLOCK_MONOTONIC) { 1234.012345 }
         tick_count = MonotonicTickCount.now
@@ -162,12 +162,19 @@ describe MonotonicTickCount do
       end
     end
 
-    context ".timer" do
+    describe ".timer" do
       it "should return the result and elapsed seconds of the given block" do
         expect(MonotonicTickCount).to receive(:now).and_return(0.0, 2.718)
         result, duration = MonotonicTickCount.timer { 1 }
         expect(result).to be == 1
         expect(duration).to be == 2.718
+      end
+
+      it "yields the start_tick to the block" do
+        allow(MonotonicTickCount).to receive(:now).and_return(1.234)
+        MonotonicTickCount.timer do |start_tick|
+          expect(start_tick).to eq(1.234)
+        end
       end
     end
   end
