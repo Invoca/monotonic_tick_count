@@ -62,9 +62,9 @@ class MonotonicTickCount
 
     # yields to the caller and returns a pair: [result from yield, float time in seconds of block run]
     def timer
-      start = self.now
-      result = yield
-      [result, self.now - start]
+      start_tick = self.now
+      result = yield(start_tick)
+      [result, self.now - start_tick]
     end
   end
 end

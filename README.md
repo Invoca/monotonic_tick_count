@@ -15,7 +15,7 @@ tick_count_b - tick_count_a => 900.0
 
 Finding the elapsed seconds of a block
 ```
-return_val, elapsed_seconds = MonotonicTickCount.timer do
+return_val, elapsed_seconds = MonotonicTickCount.timer do |start_tick|
   sleep(10)
   1
 end
