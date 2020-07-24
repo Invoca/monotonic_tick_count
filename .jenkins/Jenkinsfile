@@ -34,17 +34,17 @@ pipeline {
         }
 
         stage('Rails 4') {
-          steps { sh 'bundle exec rails rails-4 rspec --format RspecJunitFormatter --out spec/reports/rails-4/rspec.xml' }
+          steps { sh 'bundle exec appraisal rails-4 rspec --format RspecJunitFormatter --out spec/reports/rails-4/rspec.xml' }
           post  { always { junit 'spec/reports/rails-4/*.xml' } }
         }
 
         stage('Rails 5') {
-          steps { sh 'bundle exec rails rails-5 rspec --format RspecJunitFormatter --out spec/reports/rails-5/rspec.xml' }
+          steps { sh 'bundle exec appraisal rails-5 rspec --format RspecJunitFormatter --out spec/reports/rails-5/rspec.xml' }
           post  { always { junit 'spec/reports/rails-5/*.xml' } }
         }
 
         stage('Rails 6') {
-          steps { sh 'bundle exec rails rails-6 rspec --format RspecJunitFormatter --out spec/reports/rails-6/rspec.xml' }
+          steps { sh 'bundle exec appraisal rails-6 rspec --format RspecJunitFormatter --out spec/reports/rails-6/rspec.xml' }
           post  { always { junit 'spec/reports/rails-6/*.xml' } }
         }
       }
