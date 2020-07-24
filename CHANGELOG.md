@@ -1,10 +1,12 @@
-# Changelog
-All notable changes to this project will be documented in this file.
+# CHANGELOG for `pnapi_models`
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+Inspired by [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+Note: this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.3.0] - Unreleased
+### Added
+- Added support for rails 5 and 6
 
 ## [0.2.1] - 2020-07-09
 ### Changed
@@ -17,6 +19,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - prepared for initial release
 
-[Unreleased]: https://github.com/Invoca/monotonic_tick_count/compare/v0.2.1...HEAD
+[0.3.0]: https://github.com/Invoca/monotonic_tick_count/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/Invoca/monotonic_tick_count/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/Invoca/monotonic_tick_count/releases/tag/v0.2.0
