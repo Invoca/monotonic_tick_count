@@ -1,4 +1,4 @@
-# CHANGELOG for `pnapi_models`
+# CHANGELOG for `monotonic_tick_count`
 
 Inspired by [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
