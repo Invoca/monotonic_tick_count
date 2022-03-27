@@ -68,7 +68,6 @@ PLATFORMS
 
 DEPENDENCIES
   appraisal
-  bundler (~> 1.15)
   monotonic_tick_count!
   pry
   rake
@@ -78,4 +77,4 @@ DEPENDENCIES
   rubocop (= 0.54.0)
 
 BUNDLED WITH
-   1.17.3
+   2.2.29

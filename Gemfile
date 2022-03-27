@@ -6,7 +6,6 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'appraisal'
-gem 'bundler', '~> 1.15'
 gem 'pry'
 gem 'rake'
 gem 'rspec', '~> 3.7'
