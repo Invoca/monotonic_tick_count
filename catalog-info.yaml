@@ -19,6 +19,8 @@ metadata:
   tags:
   - ruby
   - gem
+  - public
+  - rails-dependent
   annotations:
     buildkite.com/project-slug: invoca/monotonic_tick_count
     github.com/project-slug: invoca/monotonic_tick_count
