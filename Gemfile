@@ -13,6 +13,8 @@ gem 'rspec', '~> 3.7'
 gem 'rspec_junit_formatter', '~> 0.4'
 gem 'rspec-mocks'
 gem 'rubocop', '0.54.0'
+gem 'simplecov', '~> 0.22'
+gem 'simplecov-lcov', '~> 0.8'
 
 
 gem "concurrent-ruby", "~> 1.0", "< 1.3.5"

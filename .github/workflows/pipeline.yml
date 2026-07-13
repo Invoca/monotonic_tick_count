@@ -6,3 +6,4 @@ on:
 jobs:
   tests:
     uses: Invoca/ruby-test-matrix-workflow/.github/workflows/ruby-test-matrix.yml@main
+    secrets: inherit
